@@ -6,8 +6,9 @@ using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
-    [Header("Player Stats")]
+    [Header("Player Stats and game settings")]
     public ScoreManager scoreManager;
+    public int costMultiplier = 10;
 
     [Header("UI interactions")]
     public Button clickerButton;
@@ -16,13 +17,16 @@ public class UIManager : MonoBehaviour
 
     [Header("UI labels")]
     public TMP_Text scoreText; // UI text to display score (Status Text)
+    public TMP_Text scorePerUpgradeText; //UI text to display upgrade effect
+    public TMP_Text costPerUpgradeText; //UI text to display upgrade cost
+    public TMP_Text scorePerClickText; //UI text to display current per click value
 
     public void ToggleClickerButton()
     {
         // Toggle active state
         clickerButton.gameObject.SetActive(!clickerButton.gameObject.activeSelf);
     }
-
+    // Button click methods
     public void OnClickerButtonClick()
     {
         scoreManager.AddScore();
@@ -31,14 +35,46 @@ public class UIManager : MonoBehaviour
         //Update status text
         UpdateScore();
     }
+    public void OnUpgradeButtonClick()
+    {
+        int upgradeAmount = Mathf.RoundToInt(upgradeSlider.value);
+        int cost = upgradeAmount * costMultiplier;
+        if (scoreManager.score >= cost)
+        {
+            scoreManager.score -= cost;
+            scoreManager.AddScorePerClick(upgradeAmount);
+            UpdateScorePerClick();
+        } 
+        else
+        {
+            Debug.Log("Not enough score to upgrade!");
+            scoreText.text = "Not enough score to upgrade!";
+        }
+    }
+
     public void UpdateScore()
     {
-        scoreText.text = "Score: " + scoreManager.score;
+        scoreText.text = $"Score: {scoreManager.score}";
+    }
+    public void UpdateScorePerClick()
+    {
+        scorePerClickText.text = $"Score per click: {scoreManager.scorePerClick}";
+    }
+
+    // method to update slider cost and effect
+    public void OnSliderUpgradeChanged(float value)
+    {
+        int upgradeAmount = Mathf.RoundToInt(value);
+        int cost = upgradeAmount * costMultiplier;
+
+        // Update the TMP_Texts
+        scorePerUpgradeText.text = $"Score +{upgradeAmount} per click";
+        costPerUpgradeText.text = $"Cost: {cost}";
     }
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
