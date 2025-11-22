@@ -1,26 +1,22 @@
-using TMPro;
 using UnityEngine;
 
 public class ScoreManager : MonoBehaviour
 {
     public int score = 0; // Score counter
-    public int scorePerClick = 1;
-    public TMP_Text scoreText; // UI text to display score
+    public int scorePerClick = 1; //Upgrade counter
 
     // method to add score
     public void AddScore()
     {
         score += scorePerClick;
-        UpdateScoreText();
     }
-    void UpdateScoreText()
+    public void AddScorePerClick(int amount)
     {
-        scoreText.text = "Score: " + score;
-        Debug.Log("Score: " + score);
+        scorePerClick += amount;
     }
-    public void UpgradeClick()
+    // display method for debugging
+    public void DisplayScore()
     {
-        scorePerClick += 1;
-        Debug.Log("Score per click: " + scorePerClick);
+        Debug.Log($"Score: {score}, ScorePerClick: {scorePerClick}");
     }
 }
