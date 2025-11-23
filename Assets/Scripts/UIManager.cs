@@ -17,11 +17,11 @@ public class UIManager : MonoBehaviour
 
     [Header("UI labels")]
     public TMP_Text scoreText; // UI text to display score (Status Text)
-    public TMP_Text scorePerUpgradeText; //UI text to display upgrade effect
+    public TMP_Text effectPerUpgradeText; //UI text to display upgrade effect
     public TMP_Text costPerUpgradeText; //UI text to display upgrade cost
     public TMP_Text scorePerClickText; //UI text to display current per click value
 
-    public TMP_Text scorePerAutoUpgradeText; //UI text to display auto upgrade effect
+    public TMP_Text effectPerAutoUpgradeText; //UI text to display auto upgrade effect
     public TMP_Text costPerAutoUpgradeText; //UI text to display auto upgrade cost
     public TMP_Text scorePerAutoClickText; //UI text to display current per auto click value
 
@@ -71,6 +71,7 @@ public class UIManager : MonoBehaviour
             scoreText.text = "Not enough score to upgrade!";
         }
     }
+    // Update methods to display labels
     public void UpdateScore()
     {
         scoreText.text = $"Score: {scoreManager.score}";
@@ -83,17 +84,17 @@ public class UIManager : MonoBehaviour
     {
         scorePerAutoClickText.text = $"Score per second: {scoreManager.scorePerAutoClick}";
     }
-    // method to update slider cost and effect
+    // Update method to display slider cost and effect
     public void OnSliderUpgradeChanged(float value)
     {
         int upgradeAmount = Mathf.RoundToInt(value);
         int cost = upgradeAmount * costMultiplier;
 
         // Update the TMP_Texts
-        scorePerUpgradeText.text = $"Score +{upgradeAmount} per click";
+        effectPerUpgradeText.text = $"Score +{upgradeAmount} per click";
         costPerUpgradeText.text = $"Cost: {cost}";
         // Update the TMP_Texts for autominer
-        scorePerAutoUpgradeText.text = $"Score +{upgradeAmount} per second";
+        effectPerAutoUpgradeText.text = $"Score +{upgradeAmount} per second";
         costPerAutoUpgradeText.text = $"Cost: {cost}";
     }
     // Start is called once before the first execution of Update after the MonoBehaviour is created
