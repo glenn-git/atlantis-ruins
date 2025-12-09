@@ -12,7 +12,8 @@ public class UIManager : MonoBehaviour
     public int costMultiplier = 10;
     public float gameTime = 0f;
     private float perSecond = 1f;
-    
+    private bool isPaused = true;
+
     [Header("UI interactions")]
     public Button clickerButton;
     public Button upgradeButton;
@@ -35,6 +36,10 @@ public class UIManager : MonoBehaviour
 
     public void ToggleButtons()
     {
+        // Invert pause state when toggled
+        isPaused = !isPaused;
+
+        // Show/hide buttons and slider
         bool isActive = !clickerButton.gameObject.activeSelf; // invert current state
         clickerButton.gameObject.SetActive(isActive);
         upgradeButton.gameObject.SetActive(isActive);
@@ -134,12 +139,17 @@ public class UIManager : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-
+        clickerButton.gameObject.SetActive(false);
+        upgradeButton.gameObject.SetActive(false);
+        autoUpgradeButton.gameObject.SetActive(false);
+        upgradeSlider.gameObject.SetActive(false);
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (isPaused)
+            return; // Stop timer + auto clicker when paused
         gameTime += Time.deltaTime;
         perSecond -= Time.deltaTime;
 
